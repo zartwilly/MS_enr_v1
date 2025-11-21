@@ -11,6 +11,7 @@ import pandas as pd
 import pandapower as pp
 
 from datetime import datetime, timedelta, date  
+import calendar
 
 
 ###############################################################################
@@ -87,31 +88,37 @@ def create_day_timestamps(year:int, nb_hrs_yr:int=8760):
         dico_days_ts[jour] = days_by_ts[num_day]
     
     return dico_days_ts
-    
 
-  
-def creer_dict_jours_timestamps():
-    # Date de départ : 1er janvier 2023 à 00:00
-    debut = datetime(2023, 1, 1)
-    # Nombre total d'heures dans 2023 = 8760 (année non bissextile)
-    nb_heures = 8760
-    
-    # Générer la liste complète des timestamps horaires
-    timestamps = [debut + timedelta(hours=i) for i in range(nb_heures)]
-    
-    dict_jours = {}
-    
-    # Pour chaque jour de l'année 2023
-    for i in range(365):  # 365 jours en 2023
-        jour = (date(2023, 1, 1) + timedelta(days=i))
-        # Extraire les timestamps correspondant à ce jour
-        debut_jour = datetime.combine(jour, datetime.min.time())
-        fin_jour = debut_jour + timedelta(days=1)
-        ts_jour = [ts for ts in timestamps if debut_jour <= ts < fin_jour]
-        dict_jours[jour] = ts_jour
-    
-    return dict_jours
-    
+def create_mois_timestamps(year:int, nb_hrs_yr:int=8760):
+    """
+    create a dictionary having month as keys and values as list of min and 
+    max timestamps.
+
+    Parameters
+    ----------
+    year : int
+        DESCRIPTION.
+    nb_hrs_yr : int, optional
+        DESCRIPTION. The default is 8760.
+
+    Returns
+    -------
+    None.
+
+    """
+    ts_min = 0
+    month_days = {}
+    for mois in range(1, 13):
+        nb_days = calendar.monthrange(year, mois)[1]
+        name_month = calendar.month_name[mois].lower()
+        
+        nb_ts = nb_days * 24
+        ts_max = ts_min + nb_ts
+        month_days[name_month] = {"nb_days":nb_days, 
+                                  name_month:range(ts_min, ts_max)}
+        ts_min = ts_max
+        
+    return month_days
 ###############################################################################
 #                   create dico day/period timestamp : end
 ###############################################################################
