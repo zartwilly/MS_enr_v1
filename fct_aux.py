@@ -10,7 +10,12 @@ import os
 import pandas as pd
 import pandapower as pp
 
+from datetime import datetime, timedelta, date  
 
+
+###############################################################################
+#                       Constances : start
+###############################################################################
 YEAR = 2023
 
 LAT_BLAGNAC = 43.621
@@ -23,7 +28,9 @@ JSON_LOAD_NX = os.path.join(ELEC_NET, "76_MVFeeder2015.json")
 NETWORK = os.path.join(ELEC_NET, "76_MVFeeder2015_load_profiles.parquet")
 
 PV_DATA2023 = os.path.join(PV_DATA, "FRA_Toulouse-Blagnac_2023.csv")
-
+###############################################################################
+#                       Constances : end
+###############################################################################
 
 ###############################################################################
 #                   load Data : start
@@ -47,7 +54,10 @@ def load_network(jsonfile=JSON_LOAD_NX):
 ###############################################################################
 #                   create dico day/period timestamp : start
 ###############################################################################
-def create_day_timestamps(year:int, n_ts:int=8760):
+def split_list(lst, nb_hr_day=24):
+    return [lst[i:i + nb_hr_day] for i in range(0, len(lst), nb_hr_day)]
+
+def create_day_timestamps(year:int, nb_hrs_yr:int=8760):
     """
     create a dictionary having day as key and values a dictionary with 2 keys 
     ts_min: the timestamp at 00 hour
@@ -57,15 +67,50 @@ def create_day_timestamps(year:int, n_ts:int=8760):
     ----------
     year : int
         DESCRIPTION.
-    n_ts : int, optional
-        DESCRIPTION. The default is 8760.
+    nb_hrs_yr : int, optional
+        DESCRIPTION. number of hours in one year. The default is 8760.
 
     Returns
     -------
     None.
 
     """
+    # Date de départ : 1er janvier 2023 à 00:00
+    debut = datetime(year, 1, 1)
     
+    timestamps = range(0, nb_hrs_yr, 1)
+    days_by_ts =  split_list(lst=timestamps, nb_hr_day=24)
+    
+    dico_days_ts = dict()
+    for num_day in range(365):
+        jour = (debut + timedelta(days=num_day))
+        dico_days_ts[jour] = days_by_ts[num_day]
+    
+    return dico_days_ts
+    
+
+  
+def creer_dict_jours_timestamps():
+    # Date de départ : 1er janvier 2023 à 00:00
+    debut = datetime(2023, 1, 1)
+    # Nombre total d'heures dans 2023 = 8760 (année non bissextile)
+    nb_heures = 8760
+    
+    # Générer la liste complète des timestamps horaires
+    timestamps = [debut + timedelta(hours=i) for i in range(nb_heures)]
+    
+    dict_jours = {}
+    
+    # Pour chaque jour de l'année 2023
+    for i in range(365):  # 365 jours en 2023
+        jour = (date(2023, 1, 1) + timedelta(days=i))
+        # Extraire les timestamps correspondant à ce jour
+        debut_jour = datetime.combine(jour, datetime.min.time())
+        fin_jour = debut_jour + timedelta(days=1)
+        ts_jour = [ts for ts in timestamps if debut_jour <= ts < fin_jour]
+        dict_jours[jour] = ts_jour
+    
+    return dict_jours
     
 ###############################################################################
 #                   create dico day/period timestamp : end
