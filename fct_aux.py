@@ -25,8 +25,8 @@ ALT_BLAGNAC = 150               # degre
 ELEC_NET = "./ELEC_NETWORK"
 PV_DATA = "./PV_DATA"
 
-JSON_LOAD_NX = os.path.join(ELEC_NET, "76_MVFeeder2015.json")
-NETWORK = os.path.join(ELEC_NET, "76_MVFeeder2015_load_profiles.parquet")
+JSONFILE_NETWORK = os.path.join(ELEC_NET, "76_MVFeeder2015.json")
+PROFILES = os.path.join(ELEC_NET, "76_MVFeeder2015_load_profiles.parquet")
 
 PV_DATA2023 = os.path.join(PV_DATA, "FRA_Toulouse-Blagnac_2023.csv")
 ###############################################################################
@@ -43,11 +43,13 @@ def load_pv_data(pathfile=PV_DATA2023, skiprows=12, year=YEAR):
     
     return df_pv
 
-def load_network(jsonfile=JSON_LOAD_NX):
+def load_network(jsonfile=JSONFILE_NETWORK):
     net = pp.from_json(jsonfile)
     return net
 
-
+def load_profiles(profiles_file=PROFILES):
+    profiles = pd.read_parquet(PROFILES)
+    return profiles
 ###############################################################################
 #                   load Data : end
 ###############################################################################
@@ -123,3 +125,29 @@ def create_mois_timestamps(year:int, nb_hrs_yr:int=8760):
 #                   create dico day/period timestamp : end
 ###############################################################################
 
+###############################################################################
+#               extract sub-dataframes by row-block timestamp : start
+###############################################################################
+def extract_sub_dataframes(profiles: pd.DataFrame, ts_min:int, ts_max:int):
+    """
+    extract sub-dataframes by row-block timestamp
+
+    Parameters
+    ----------
+    profiles : pd.DataFrame
+        DESCRIPTION.
+    ts_min : int
+        DESCRIPTION.
+    ts_max : int
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
+    return profiles.iloc[ts_min:ts_max+1, :].reset_index()
+    
+###############################################################################
+#               extract sub-dataframes by row-block timestamp : end
+###############################################################################
