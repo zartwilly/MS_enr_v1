@@ -26,6 +26,7 @@ TIMEZONE = 1
 ELEC_NET = "./ELEC_NETWORK"
 PV_DATA = "./PV_DATA"
 RES_DATA = "./RES_DATA"
+PLOT_DATA = os.path.join(RES_DATA, "PLOT_DATA")
 
 JSONFILE_NETWORK = os.path.join(ELEC_NET, "76_MVFeeder2015.json")
 PROFILES = os.path.join(ELEC_NET, "76_MVFeeder2015_load_profiles.parquet")
