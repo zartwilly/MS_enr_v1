@@ -55,6 +55,7 @@ def model_pv():
     return mc, weather
 
 def generate_pv_ac():
+    mc, weather = model_pv()
     mc.run_model(weather)
     df_ac = mc.results.ac
     return df_ac
