@@ -22,6 +22,7 @@ YEAR = 2023
 LAT_BLAGNAC = 43.621
 LON_BLAGNAC = 1.379
 ALT_BLAGNAC = 150               # degre
+TIMEZONE = 1
 ELEC_NET = "./ELEC_NETWORK"
 PV_DATA = "./PV_DATA"
 RES_DATA = "./RES_DATA"
@@ -30,6 +31,12 @@ JSONFILE_NETWORK = os.path.join(ELEC_NET, "76_MVFeeder2015.json")
 PROFILES = os.path.join(ELEC_NET, "76_MVFeeder2015_load_profiles.parquet")
 
 PV_DATA2023 = os.path.join(PV_DATA, "FRA_Toulouse-Blagnac_2023.csv")
+
+# PVLIB
+Surface_tilt_min = 30
+Surface_tilt_max = 35
+Surface_Azimuth_Min = 20
+Surface_Azimuth_Max = 40
 ###############################################################################
 #                       Constances : end
 ###############################################################################
