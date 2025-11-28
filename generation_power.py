@@ -57,7 +57,9 @@ def model_pv():
 def generate_pv_ac():
     mc, weather = model_pv()
     mc.run_model(weather)
-    df_ac = mc.results.ac
+    df_ac = mc.results.ac 
+    # value in Kwh
+    df_ac /= pow(10,3)
     return df_ac
 ###############################################################################
 #                   runtime
