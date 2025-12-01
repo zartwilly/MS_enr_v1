@@ -8,6 +8,7 @@ Created on Wed Nov 26 22:05:58 2025
 data analysis
 """
 import os
+import pandas as pd
 import fct_aux as aux
 import generation_power as genPV
 import loadInsertRun_ts as runts
@@ -70,10 +71,59 @@ def plot_data():
 ###############################################################################
 
 ###############################################################################
+#                   count MW by bus : Debut
+###############################################################################
+def identify_loading_by_bus():
+    
+    profiles = aux.load_profiles(profiles_file=aux.PROFILES)
+    
+    profiles['datetime'] = df_ac.index
+    profiles = profiles.set_index('datetime')
+    
+    net = aux.load_network(jsonfile=aux.JSONFILE_NETWORK)
+    resultat = net.load.groupby('bus').apply(agregation_par_bus).round(6)
+    
+    dico_ts = dict()
+    for ts in profiles.index:
+        dico_bus = dict()
+        for id_bus in resultat.index:
+            print(f"--- ts={ts} id_bus={id_bus} ----")
+            id_bats = resultat.loc[id_bus,:]['index_batiments']
+            som_mw = 0
+            for id_bat in id_bats:
+                som_mw += profiles.loc[ts,id_bat]
+                
+            dico_bus["bus"] = {"id_bus": id_bus, "n_bats": len(id_bats),
+                               "som_load_ts_mw": som_mw, 
+                               "som_p_mw": resultat.loc[id_bus,"somme_p_mw"] }
+        dico_ts[ts] = dico_bus
+        
+    return dico_ts
+
+def agregation_par_bus(group):
+    return pd.Series({
+        'nombre_batiments': len(group),
+        'batiments': sorted(list(group['name'].unique())),
+        'index_batiments': sorted(list(group.index)),
+        'somme_p_mw': group['p_mw'].sum(),
+        'somme_q_mvar': group['q_mvar'].sum(),
+        'nb_residential': (group['usage'] == 'residential').sum(),
+        'nb_commercial': (group['usage'] == 'commercial').sum(),
+        'nb_agriculture': (group['usage'] == 'agriculture').sum()
+    })
+
+###############################################################################
+#                   count MW by bus : Fin
+###############################################################################
+
+###############################################################################
 #                   runtime
 ###############################################################################
 if __name__ == '__main__':
     
     df_ac, profiles = plot_data()
+    net = aux.load_network(jsonfile=aux.JSONFILE_NETWORK)
+    
+    dico_ts = identify_loading_by_bus()
     pass
     
