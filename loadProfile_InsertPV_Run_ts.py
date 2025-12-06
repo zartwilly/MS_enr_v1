@@ -21,17 +21,6 @@ from pandapower.timeseries import OutputWriter
 from pandapower.timeseries import run_timeseries
 from pandapower.control import ConstControl
 
-###############################################################################
-#                   constances : Debut
-###############################################################################
-
-DICO_TS_HIVER = {"period_name":"HIVER", "month": 3, "day": 2, "hour": 10, "minute":30}
-DICO_TS_SUMMER = {"period_name":"SUMMER", "month": 7, "day": 4, "hour": 10, "minute":30}
-DICO_TS_AUTUMN = {"period_name":"AUTUMN", "month": 12, "day": 2, "hour": 13, "minute":30}
-
-###############################################################################
-#                   constances : Fin
-###############################################################################
 
 
 ###############################################################################
@@ -114,11 +103,11 @@ def timeseries_run_network(output_dir, dico):
 if __name__ == '__main__':
     
     output_dir = os.path.join(os.getcwd(), "RES_DATA", 
-                              f"NETWORK_{DICO_TS_HIVER['period_name']}_day{DICO_TS_HIVER['day']}_month{DICO_TS_HIVER['month']}_H{DICO_TS_HIVER['hour']}_Min{DICO_TS_HIVER['minute']}")
+                              f"NETWORK_{aux.DICO_TS_HIVER['period_name']}_day{aux.DICO_TS_HIVER['day']}_month{aux.DICO_TS_HIVER['month']}_H{aux.DICO_TS_HIVER['hour']}_Min{aux.DICO_TS_HIVER['minute']}")
     print("Results can be found in your local temp folder: {}".format(output_dir))
     if not os.path.exists(output_dir):
         #os.mkdir(output_dir)
         os.makedirs(output_dir, exist_ok=True)
         
-    timeseries_run_network(output_dir=output_dir, dico=DICO_TS_HIVER)
+    timeseries_run_network(output_dir=output_dir, dico=aux.DICO_TS_HIVER)
     pass
