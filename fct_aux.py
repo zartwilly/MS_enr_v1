@@ -23,6 +23,7 @@ LAT_BLAGNAC = 43.621
 LON_BLAGNAC = 1.379
 ALT_BLAGNAC = 150               # degre
 TIMEZONE = 1
+tz='Etc/GMT+1'
 ELEC_NET = "./ELEC_NETWORK"
 PV_DATA = "./PV_DATA"
 RES_DATA = "./RES_DATA"
@@ -40,6 +41,18 @@ Surface_Azimuth_Min = 20
 Surface_Azimuth_Max = 40
 ###############################################################################
 #                       Constances : end
+###############################################################################
+
+###############################################################################
+#                   constances Timestamp SUMME, HIVER, AUTUMN: Debut
+###############################################################################
+
+DICO_TS_HIVER = {"period_name":"HIVER", "month": 3, "day": 2, "hour": 10, "minute":30}
+DICO_TS_SUMMER = {"period_name":"SUMMER", "month": 7, "day": 4, "hour": 10, "minute":30}
+DICO_TS_AUTUMN = {"period_name":"AUTUMN", "month": 12, "day": 2, "hour": 13, "minute":30}
+
+###############################################################################
+#                   constances Timestamp SUMME, HIVER, AUTUMN : Fin
 ###############################################################################
 
 ###############################################################################
