@@ -75,7 +75,7 @@ def plot_data():
 ###############################################################################
 #                   count MW by bus et plot df_bus: Debut
 ###############################################################################
-def identify_loading_by_bus():
+def identify_loading_by_bus(df_ac):
     
     profiles = aux.load_profiles(profiles_file=aux.PROFILES)
     
@@ -109,11 +109,11 @@ def identify_loading_by_bus():
         
     return dico_ts, df_bus
 
-def identify_loading_by_bus_BIS():
+def identify_loading_by_bus_BIS(index_pv):
     
     profiles = aux.load_profiles(profiles_file=aux.PROFILES)
     
-    profiles['datetime'] = df_ac.index
+    profiles['datetime'] = index_pv
     profiles = profiles.set_index('datetime')
     
     net = aux.load_network(jsonfile=aux.JSONFILE_NETWORK)
@@ -135,6 +135,8 @@ def identify_loading_by_bus_BIS():
         df_bus.append(df_ts)
         
     df_bus = pd.concat(df_bus, axis=0)
+    
+    df_bus.to_csv(os.path.join(aux.ELEC_NET, "df_bus.csv"))
     return df_bus
 
 def agregation_par_bus(group):
@@ -407,7 +409,8 @@ if __name__ == '__main__':
     #dico_ts, df_bus = identify_loading_by_bus()
     #plot_df_bus(df_bus=df_bus) 
     
-    df_bus_BIS = identify_loading_by_bus_BIS()
+    index_pv = df_ac.index
+    df_bus_BIS = identify_loading_by_bus_BIS(index_pv=index_pv)
     #plot_df_bus(df_bus=df_bus_BIS)                                 # saving file too heavy 250Mo 
     #plot_df_bus_saveFolder(df_bus_BIS)
     #plot_df_bus_grouped(df_bus_BIS, group_size=50)
