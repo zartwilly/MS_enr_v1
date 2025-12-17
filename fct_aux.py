@@ -35,7 +35,7 @@ PROFILES = os.path.join(ELEC_NET, "76_MVFeeder2015_load_profiles.parquet")
 PV_DATA2023 = os.path.join(PV_DATA, "FRA_Toulouse-Blagnac_2023.csv")
 
 
-
+STRATEGIES_ADD_PV = ["most_loaded_bus", "most_connected_bus"]
 ###############################################################################
 #                       Constances PVLIB : end
 ###############################################################################
