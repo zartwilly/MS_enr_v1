@@ -58,10 +58,11 @@ Surface_champSolaire = 15               # en m²
 #                   constances Timestamp SUMME, HIVER, AUTUMN: Debut
 ###############################################################################
 
-DICO_TS_HIVER = {"period_name":"HIVER", "month": 3, "day": 2, "hour": 10, "minute":30}
+DICO_TS_HIVER = {"period_name":"HIVER", "month": 3, "day": 2, "hour": 13, "minute":30}
 DICO_TS_SUMMER = {"period_name":"SUMMER", "month": 7, "day": 4, "hour": 10, "minute":30}
 DICO_TS_AUTUMN = {"period_name":"AUTUMN", "month": 12, "day": 2, "hour": 13, "minute":30}
 
+VAL_BUS_MAX_CHARGE = 1.5e-2 #0.00015
 ###############################################################################
 #                   constances Timestamp SUMME, HIVER, AUTUMN : Fin
 ###############################################################################
