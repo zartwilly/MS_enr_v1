@@ -145,8 +145,10 @@ def selected_bus_by_strategy(sorted_idbus_p_loaded, strategy="most_loaded_bus"):
             return build_list_of_prefixes(data=sorted_idbus_p_loaded, bool_sort=False)
         case "most_connected_bus":
             return build_list_of_prefixes(data=sorted_idbus_p_loaded, bool_sort=True)
+        case "addPV_all_bus":
+            return [sorted_idbus_p_loaded]
         case _:
-            return sorted_idbus_p_loaded                                        # Default case
+            return [sorted_idbus_p_loaded]                                      # Default case
     pass
 ###############################################################################
 #                   get bus by policy : FIN
@@ -401,6 +403,7 @@ def runtime_with_added_PV_on_overloaded_bus_strategy(output_dir, df_bus):
             net = aux.load_network(jsonfile=aux.JSONFILE_NETWORK)
             # 2.1 : add PV at various bus in the network
             liste_busPV = list()
+            print(f"**** {sorted_idbus_p_loaded}")
             for id_bus, som_p_mw, som_load_ts_mw, miss_load, nb_bats in sorted_idbus_p_loaded:
                 
                 bus_pv = int(id_bus)
