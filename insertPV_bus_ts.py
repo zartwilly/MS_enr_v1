@@ -23,6 +23,7 @@ from pandapower.timeseries import OutputWriter
 from pandapower.timeseries import run_timeseries
 from pandapower.control import ConstControl
 
+from pathlib import Path
 
 def insertPV_bus_ts(df_bus):
     df_ac = genPV.generate_pv_ac()
@@ -255,11 +256,18 @@ if __name__ == '__main__':
     index_pv = df_ac.index
     # if 'df_bus' not in globals():
     #     df_bus = dat_an.identify_loading_by_bus_BIS(index_pv=index_pv)
-    try:
-        df_bus
-    except NameError:
-        df_bus = dat_an.identify_loading_by_bus_BIS(index_pv=index_pv)
+    # try:
+    #     df_bus
+    # except NameError:
+    #     df_bus = dat_an.identify_loading_by_bus_BIS(index_pv=index_pv)
         
+    path = Path(os.path.join(aux.ELEC_NET, "df_bus.csv"))
+    if path.is_file():
+        df_bus = pd.read_csv(path, index_col=0)
+        df_bus['datetime'] = pd.to_datetime(df_bus['datetime']) 
+    else:
+        df_bus = dat_an.identify_loading_by_bus_BIS(index_pv=index_pv)
+    
     # # profiles, date, df_bus_dat, sorted_idbus_p_loaded = insertPV_bus_ts(df_bus)
     
 
